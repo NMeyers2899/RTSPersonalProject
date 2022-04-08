@@ -105,7 +105,7 @@ public class GameManagerSelectionBehavior : MonoBehaviour
     private void DrawScreenRect(Rect rect, Color color)
     {
         GUI.color = color;
-        GUI.DrawTexture(rect, _selectionTexture);
+        GUI.DrawTexture(rect, SelectionTexture);
     }
 
     /// <summary>
