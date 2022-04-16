@@ -131,7 +131,6 @@ public class GameManagerSelectionBehavior : MonoBehaviour
     /// </summary>
     /// <param name="screenPos1"> The first point of the screen. </param>
     /// <param name="screenPos2"> The second point of the screen. </param>
-    /// <returns></returns>
     private Rect GetScreenRect(Vector3 screenPos1, Vector3 screenPos2)
     {
         // Find the bottom right and the top left of the screen.
@@ -172,6 +171,17 @@ public class GameManagerSelectionBehavior : MonoBehaviour
         }
     }
 
+    private bool FindWithinSelectionBounds(Transform unit)
+    {
+        // If the player is not dragging their cursor, return false.
+        if (!_isDragging)
+            return false;
+
+        Camera camera = Camera.main;
+        Bounds viewPortBounds = GetViewPortBounds(camera, _mousePosition, Input.mousePosition);
+        return viewPortBounds.Contains(camera.WorldToViewportPoint(unit.position));
+    }
+
     private void Update()
     {
         // If the player left clicks...
@@ -186,7 +196,7 @@ public class GameManagerSelectionBehavior : MonoBehaviour
             if(Physics.Raycast(ray, out _hit))
             {
                 // ...check the tag of whatever was hit. If it was a unit...
-                if(_hit.transform.gameObject.CompareTag("Units"))
+                if(_hit.transform.gameObject.CompareTag("PlayerUnits"))
                 {
                     // ...run the SelectUnit method, giving it the transform of what was hit.
                     SelectUnit(_hit.transform, Input.GetKey(KeyCode.LeftShift));
